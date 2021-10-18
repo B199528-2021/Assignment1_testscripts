@@ -53,7 +53,7 @@ unzip "*.zip"
 
 cd ..
 
-# save the summaries into one file
+# save the fastqc summaries into one file
 while read READS
 do
  cd ./fastqc_out_folder/${READS}_fastqc
@@ -61,12 +61,7 @@ do
  cd ../..
 done < all_fastqc_files.txt
 
-
-exit
-
-
-# save the summaries into a file and tell the user
-cat summary.txt >> ../../summaries_fastqc.txt
+# let the user know
 echo -e "\nPlease find the summary of fastqc quality check in the file 'summaries_fastqc'."
 echo "You can also find the html files for each sequence in the folder 'fastqc_out_folder'."
 echo -e "\nIf the sequence failed the check, it might be a good idea to trim low quality reads and adapters."
@@ -75,12 +70,12 @@ echo "If you want to exclude sequences, please delete them from your folder and 
 
 # ask user if he wants to stop
 echo -e "\nDo you want to continue without excluding any sequences? [Y,n]"
-read input
+read input 
 if [[ $input == "Y" || $input == "y" ]]; then
-	echo "This script continues now."
+ echo "This script continues now."
 else
-	echo "Please exclude your sequences and then run this script again."
-	exit
+ echo "Please exclude your sequences and then run this script again."
+ exit
 fi
 
 echo "test if it continues"
