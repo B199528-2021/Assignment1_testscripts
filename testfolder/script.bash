@@ -19,12 +19,17 @@ do
  ls $FQ > all_fastqc_files.txt
 done
 
-# remove first line (that is the information about total number)
-sed -i "1d" all_fastqc_files.txt 
+# include only files which end with ".fq.gz"
+grep ".fq.gz" all_fastqc_files.txt > tmpfile && mv tmpfile all_fastqc_files.txt
 
+exit
+
+#----------------------------------------------------
 # THIS IS ONLY FOR TESTING -> TODO: REMOVE AT THE END
 # pick only the first 6 reads
 sed -i -n "1,6 p" all_fastqc_files.txt
+#----------------------------------------------------
+
 
 # run fastqc for all fastq files
 while read CHECK
@@ -34,7 +39,6 @@ do
  fastqc -o fastqc_out_folder $DIRFQFILE/$CHECK
  
 done < all_fastqc_files.txt
-
 
 # unzip the zip file
 #cd fastqc_out_folder
