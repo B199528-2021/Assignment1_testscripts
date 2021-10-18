@@ -13,3 +13,9 @@ cd fastqc_out_folder
 
 # open the zip file in the output folder
 unzip "*.zip"
+
+# go to the unzipped folder
+cd ${FQFILE}_fastqc
+
+# show the summary file
+cat summary.txt
