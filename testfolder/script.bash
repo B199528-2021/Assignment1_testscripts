@@ -26,15 +26,18 @@ cd ${FQFILE}_fastqc
 
 # save the summary into a file and tell the user
 cat summary.txt >> ../../summaries_fastqc.txt
-echo "Please find the summary of quality check with fastqc in the file 'summaries_fastqc'."
+echo -e "\nPlease find the summary of fastqc quality check in the file 'summaries_fastqc'."
+echo "If the sequence failed the check, it might be a good idea to trim low quality reads and adapters."
+echo "You could run for example 'TrimGalore' to get better qualities of your sequences."
 echo "If you want to exclude sequences, please delete them from your folder and run this script again."
 
 # ask user if he wants to stop
-echo "Do you want to continue without excluding any sequences? [Y,n]"
+echo -e "\nDo you want to continue without excluding any sequences? [Y,n]"
 read input
 if [[ $input == "Y" || $input == "y" ]]; then
-	echo "continue"
+	echo "This script continues now."
 else
+	echo "Please exclude your sequences and then run this script again."
 	exit
 fi
 
