@@ -22,6 +22,15 @@ done
 # include only files which end with ".fq.gz"
 grep ".fq.gz" all_fastqc_files.txt > tmpfile && mv tmpfile all_fastqc_files.txt
 
+# delete the file endings
+while read FQ
+do
+ echo $FQ | rev | cut -c7- | rev >> tmpfile
+done < all_fastqc_files.txt
+
+mv tmpfile all_fastqc_files.txt
+
+exit
 
 #----------------------------------------------------
 # THIS IS ONLY FOR TESTING -> TODO: REMOVE AT THE END
@@ -41,17 +50,13 @@ done < all_fastqc_files.txt
 cd fastqc_out_folder
 unzip "*.zip"
 
-exit
 
-# test:
+# delete the endings of the read files
 
-# create a variable for the fastq file to be analysed
-FQFILE="100k.C1-1-501_1"
 
-# go to the unzipped folder
-cd ${FQFILE}_fastqc
 
-# save the summary into a file and tell the user
+
+# save the summaries into a file and tell the user
 cat summary.txt >> ../../summaries_fastqc.txt
 echo -e "\nPlease find the summary of fastqc quality check in the file 'summaries_fastqc'."
 echo "You can also find the html files for each sequence in the folder 'fastqc_out_folder'."
