@@ -82,11 +82,18 @@ esac
 # directory with reference genome sequence of Trypanosoma congolense
 DIRTCONGO="/localdisk/data/BPSM/AY21/Tcongo_genome/"
 
-# copy genome sequence into a folder and ungzip it
+# copy genome sequence into a folder and ungzip it to have a fasta file
 cp -r $DIRTCONGO Tcongo_genome
 cd Tcongo_genome
 gunzip *.gz
 
+# create an index for the reference genome
+# references: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#obtaining-bowtie-2
+# references: https://www.youtube.com/watch?v=fSnAeYHnPCw
+bowtie2-build TriTrypDB-46_TcongolenseIL3000_2019_Genome.fasta Tcongolense
+
+
+echo "[finished]"
 
 
 
