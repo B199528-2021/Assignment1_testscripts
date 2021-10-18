@@ -25,27 +25,23 @@ grep ".fq.gz" all_fastqc_files.txt > tmpfile && mv tmpfile all_fastqc_files.txt
 
 #----------------------------------------------------
 # THIS IS ONLY FOR TESTING -> TODO: REMOVE AT THE END
-# pick only the first 6 reads
-sed -i -n "1,6 p" all_fastqc_files.txt
+# pick only the first 4 reads
+sed -i -n "1,4 p" all_fastqc_files.txt
 #----------------------------------------------------
 
 
 # run fastqc for all fastq files
 while read CHECK
 do
- 
  # save the output in the folder "fastqc_out_folder"
  fastqc -o fastqc_out_folder $DIRFQFILE/$CHECK
- 
 done < all_fastqc_files.txt
 
-exit
-
 # unzip the zip file
-#cd fastqc_out_folder
-#unzip "*.zip"
+cd fastqc_out_folder
+unzip "*.zip"
 
-
+exit
 
 # test:
 
