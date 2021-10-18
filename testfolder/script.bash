@@ -16,14 +16,30 @@ echo "This is an overview of all fastqc summary files." > summaries_fastqc.txt
 # save all the fastq file names in a text file
 for FQ in $DIRFQFILE
 do
- ls -l $FQ > all_fastqc_files.txt
+ ls $FQ > all_fastqc_files.txt
 done
 
 # remove first line
-sed -i "1d" all_fastqc_files.txt
+sed -i "1d" all_fastqc_files.txt 
+
 
 # run fastqc for all fastq files
+while read CHECK
+do
+ # save the output in the folder "fastqc_out_folder"
+ fastqc -o fastqc_out_folder $DIRFQFILE/$CHECK
+done < all_fastqc_files.txt
 
+
+exit
+
+# test:
+# run fastqc for all fastq files
+for FQ in all_fastqc_files.txt
+do
+ # save the output in the folder "fastqc_out_folder"
+ fastqc -o fastqc_out_folder $DIRFQFILE/$FQ.fq.gz
+done
 
 
 exit
