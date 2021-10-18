@@ -22,13 +22,14 @@ done
 # include only files which end with ".fq.gz"
 grep ".fq.gz" all_fastqc_files.txt > tmpfile && mv tmpfile all_fastqc_files.txt
 
-exit
 
 #----------------------------------------------------
 # THIS IS ONLY FOR TESTING -> TODO: REMOVE AT THE END
 # pick only the first 6 reads
 sed -i -n "1,6 p" all_fastqc_files.txt
 #----------------------------------------------------
+
+exit
 
 
 # run fastqc for all fastq files
