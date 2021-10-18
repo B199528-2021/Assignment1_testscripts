@@ -8,11 +8,23 @@ DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 rm -r fastqc_out_folder
 mkdir fastqc_out_folder
 
+# create a file for the fastqc summaries
+echo "This is an overview of all fastqc summary files." > summaries_fastqc.txt
+
+
+
 # save all the fastq file names in a text file
 for FQ in $DIRFQFILE
 do
- ls -l $FQ >> all_fastqc_files.txt
+ ls -l $FQ > all_fastqc_files.txt
 done
+
+# remove first line
+sed -i "1d" all_fastqc_files.txt
+
+# run fastqc for all fastq files
+
+
 
 exit
 
@@ -21,8 +33,6 @@ exit
 # create a variable for the fastq file to be analysed
 FQFILE="100k.C1-1-501_1"
 
-# create a file for the fastqc summaries
-echo "This is an overview of all fastqc summary files." > summaries_fastqc.txt
 
 
 # run the software fastqc
