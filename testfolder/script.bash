@@ -5,7 +5,16 @@
 DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 
 # create a folder for the output files
-mkdir fastqc_out_folder .
+rm -r fastqc_out_folder
+mkdir fastqc_out_folder
+
+# save all the fastq file names in a text file
+for FQ in $DIRFQFILE
+do
+ ls -l $FQ >> all_fastqc_files.txt
+done
+
+exit
 
 
 
