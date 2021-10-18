@@ -35,8 +35,8 @@ mv tmpfile all_fastqc_files.txt
 
 #----------------------------------------------------
 # THIS IS ONLY FOR TESTING -> TODO: REMOVE AT THE END
-# pick only the first 4 reads
-sed -i -n "1,4 p" all_fastqc_files.txt
+# pick only the first 2 reads
+sed -i -n "1,2 p" all_fastqc_files.txt
 #----------------------------------------------------
 
 
@@ -68,9 +68,13 @@ echo -e "\nIf the sequence failed the check, it might be a good idea to trim low
 echo "You could run for example 'TrimGalore' to get better qualities of your sequences."
 echo "If you want to exclude sequences, please delete them from your folder and run this script again."
 
+#--------------------------
+# TODO: set "Y" as default!
+#--------------------------
+
 # ask user if he wants to stop
 echo -e "\nDo you want to continue without excluding any sequences? [Y,n]"
-read input 
+read input
 if [[ $input == "Y" || $input == "y" ]]; then
  echo "This script continues now."
 else
@@ -78,4 +82,4 @@ else
  exit
 fi
 
-echo "test if it continues"
+echo "[test if it continues]"
