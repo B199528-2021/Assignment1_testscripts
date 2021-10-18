@@ -4,14 +4,16 @@
 # directory with fastq files
 DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 
-# create a folder for the output files
+# delete folders and directories if they exist
 rm -r fastqc_out_folder
+rm all_fastqc_files.txt
+rm summaries_fastqc.txt
+
+# create a folder for the output files
 mkdir fastqc_out_folder
 
 # create a file for the fastqc summaries
 echo "This is an overview of all fastqc summary files." > summaries_fastqc.txt
-
-
 
 # save all the fastq file names in a text file
 for FQ in $DIRFQFILE
@@ -30,7 +32,6 @@ done < all_fastqc_files.txt
 
 mv tmpfile all_fastqc_files.txt
 
-exit
 
 #----------------------------------------------------
 # THIS IS ONLY FOR TESTING -> TODO: REMOVE AT THE END
@@ -43,16 +44,17 @@ sed -i -n "1,4 p" all_fastqc_files.txt
 while read CHECK
 do
  # save the output in the folder "fastqc_out_folder"
- fastqc -o fastqc_out_folder $DIRFQFILE/$CHECK
+ fastqc -o fastqc_out_folder $DIRFQFILE/$CHECK.fq.gz
 done < all_fastqc_files.txt
+
+exit
 
 # unzip the zip file
 cd fastqc_out_folder
 unzip "*.zip"
 
 
-# delete the endings of the read files
-
+exit
 
 
 
