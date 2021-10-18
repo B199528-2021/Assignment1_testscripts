@@ -29,8 +29,6 @@ grep ".fq.gz" all_fastqc_files.txt > tmpfile && mv tmpfile all_fastqc_files.txt
 sed -i -n "1,6 p" all_fastqc_files.txt
 #----------------------------------------------------
 
-exit
-
 
 # run fastqc for all fastq files
 while read CHECK
@@ -41,13 +39,13 @@ do
  
 done < all_fastqc_files.txt
 
+exit
+
 # unzip the zip file
 #cd fastqc_out_folder
 #unzip "*.zip"
 
 
-
-exit
 
 # test:
 
