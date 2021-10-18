@@ -4,7 +4,7 @@
 # directory with fastq files
 DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 
-# delete folders and directories if they exist
+# delete folders and directories in case they alredy exist
 rm -r fastqc_out_folder
 rm all_fastqc_files.txt
 rm summaries_fastqc.txt
@@ -68,18 +68,18 @@ echo -e "\nIf the sequence failed the check, it might be a good idea to trim low
 echo "You could run for example 'TrimGalore' to get better qualities of your sequences."
 echo "If you want to exclude sequences, please delete them from your folder and run this script again."
 
-#--------------------------
-# TODO: set "Y" as default!
-#--------------------------
-
 # ask user if he wants to stop
-echo -e "\nDo you want to continue without excluding any sequences? [Y,n]"
-read input
-if [[ $input == "Y" || $input == "y" ]]; then
- echo "This script continues now."
-else
- echo "Please exclude your sequences and then run this script again."
- exit
-fi
+echo -e "\nIS IT OKAY TO CONTINUE WITH THE CURRENT SEQUENCE? (default is 'Y')"
+echo "Type in 'N' if you want to exclude sequences from your folder instead."
 
-echo "[test if it continues]"
+read -n1 -p "Is it okay? [y,n]" doit 
+case $doit in  
+  y|Y) echo " This script continues now." ;; 
+  n|N) echo " You decided to exclude your sequences first and then run this script again." ; exit ;; 
+  *) echo " This script continues now." ;; 
+esac
+
+echo "THIS CONTINUES"
+
+
+
