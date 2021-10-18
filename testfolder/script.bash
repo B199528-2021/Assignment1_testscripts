@@ -47,15 +47,22 @@ do
  fastqc -o fastqc_out_folder $DIRFQFILE/$CHECK.fq.gz
 done < all_fastqc_files.txt
 
-exit
-
 # unzip the zip file
 cd fastqc_out_folder
 unzip "*.zip"
 
+cd ..
+
+# save the summaries into one file
+while read READS
+do
+ cd ./fastqc_out_folder/${READS}_fastqc
+ cat summary.txt >> ../../summaries_fastqc.txt
+ cd ../..
+done < all_fastqc_files.txt
+
 
 exit
-
 
 
 # save the summaries into a file and tell the user
