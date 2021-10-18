@@ -79,7 +79,11 @@ case $doit in
   *) echo " This script continues now." ;; 
 esac
 
-echo "THIS CONTINUES"
+# directory with reference genome sequence of Trypanosoma congolense
+DIRTCONGO="/localdisk/data/BPSM/AY21/Tcongo_genome/"
+
+
+
 
 
 
