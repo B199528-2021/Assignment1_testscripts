@@ -82,7 +82,10 @@ esac
 # directory with reference genome sequence of Trypanosoma congolense
 DIRTCONGO="/localdisk/data/BPSM/AY21/Tcongo_genome/"
 
-
+# copy genome sequence into a folder and ungzip it
+cp -r $DIRTCONGO Tcongo_genome
+cd Tcongo_genome
+gunzip *.gz
 
 
 
