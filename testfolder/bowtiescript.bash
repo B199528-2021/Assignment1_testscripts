@@ -57,6 +57,14 @@ do
  bowtie2 -x Tcongolense -1 ${DIR}/${SEQ}_1.fq -2 ${DIR}/${SEQ}_2.fq -S ../bowtieoutput/${SEQ}.sam
 done < ../all_fastqc_files.txt
 
+cd ..
+
+echo "Please wait, samtools is running ..."
+# turn sam files into bam files using samtools
+while read SAM
+do
+ samtools view -S -b ./bowtieoutput/${SAM}.sam > ./bowtieoutput/${SAM}.bam
+done < ./all_fastqc_files.txt
 
 
 # find out directory
