@@ -28,10 +28,9 @@ DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 #rm -r fastq_extracted_files
 #cp -r $DIRFQFILE fastq_extracted_files
 #gunzip ./fastq_extracted_files/*.fq.gz
-
-
+#
+#
 #=============================================
-
 
 # pick read1 and read2 for running bowtie2
 
@@ -42,6 +41,10 @@ do
 done < all_fastqc_files.txt
 mv tmpfile all_fastqc_files.txt 
 
+
+# delete the duplicates
+uniq all_fastqc_files.txt > tmpfile
+mv tmpfile all_fastqc_files.txt
 
 # find out directory
 echo "Here I am now:"
