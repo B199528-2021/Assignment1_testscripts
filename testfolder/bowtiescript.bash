@@ -22,13 +22,25 @@ DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 #
 #cd ..
 #
+#
+## extract fastq files from localdesk (DIRFQFILE="/localdisk/data/BPSM/AY21/fastq")
+#echo "Please wait. File being extracted..."
+#rm -r fastq_extracted_files
+#cp -r $DIRFQFILE fastq_extracted_files
+#gunzip ./fastq_extracted_files/*.fq.gz
+
+
 #=============================================
 
-# extract fastq files from localdesk (DIRFQFILE="/localdisk/data/BPSM/AY21/fastq")
-echo "Please wait. File being extracted..."
-rm -r fastq_extracted_files
-cp -r $DIRFQFILE fastq_extracted_files
-gunzip ./fastq_extracted_files/*.fq.gz
+
+# pick read1 and read2 for running bowtie2
+
+# delete the file endings ("_1" or "_2") in the file "all_fastqc_files.txt"
+while read LINE
+do
+ echo $LINE | rev | cut -c3- | rev >> tmpfile
+done < all_fastqc_files.txt
+mv tmpfile all_fastqc_files.txt 
 
 
 # find out directory
