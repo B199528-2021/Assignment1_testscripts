@@ -8,7 +8,6 @@ DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 rm -r fastqc_out_folder
 rm all_fastqc_files.txt
 rm summaries_fastqc.txt
-rm -r fastq_extracted_files
 
 # create a folder for the output files
 mkdir fastqc_out_folder
