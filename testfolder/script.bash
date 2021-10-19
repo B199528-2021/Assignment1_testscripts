@@ -8,6 +8,7 @@ DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 rm -r fastqc_out_folder
 rm all_fastqc_files.txt
 rm summaries_fastqc.txt
+rm -r fastq_extracted_files
 
 # create a folder for the output files
 mkdir fastqc_out_folder
@@ -79,37 +80,8 @@ case $doit in
   *) echo " This script continues now." ;; 
 esac
 
-# directory with reference genome sequence of Trypanosoma congolense
-DIRTCONGO="/localdisk/data/BPSM/AY21/Tcongo_genome/"
+echo "Quality check with fastqc finished."
 
-# copy genome sequence into a folder and ungzip it to have a fasta file
-cp -r $DIRTCONGO Tcongo_genome
-cd Tcongo_genome
-gunzip *.gz
-
-# create an index for the reference genome
-# references: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#obtaining-bowtie-2
-# references: https://www.youtube.com/watch?v=fSnAeYHnPCw
-bowtie2-build TriTrypDB-46_TcongolenseIL3000_2019_Genome.fasta Tcongolense
-
-# aligning the reads using bowtie2
-
-#bowtie2 -x Tcongolense -1 READ1 -2 READ2 -S ../bowtieoutput.sam
-
-# try out with 2 reads first
-
-#==============================
-# BOOKMARK
-# TODO:
-# - unzip fastq files from localdesk (DIRFQFILE="/localdisk/data/BPSM/AY21/fastq")
-# - put the fastq files into the reads (after "-1" for read1, after "-2" for read2)
-# - BOOKMARK YouTube video: 14:50
-
-bowtie2 -x Tcongolense -1 ${DIRFQFILE}/100k.C1-1-501_1.fq -2 ${DIRFQFILE}/100k.C1-1-501_2.fq -S ../bowtieoutput.sam
-
-# -U ../reads/reads_1.fq -S eg1.sam    --> delete? this is from sourceforge
-
-echo "[FINISHED]"
-
+exit
 
 
