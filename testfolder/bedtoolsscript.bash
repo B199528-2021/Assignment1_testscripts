@@ -18,6 +18,10 @@ tr "\n" " " < tempfile > tempfile2
 rm tempfile
 mv tempfile2 bamfiles.txt
 
+# save it into a variable
+BAMFILES=$(<bamfiles.txt)
+
+echo $BAMFILES
 
 
 
