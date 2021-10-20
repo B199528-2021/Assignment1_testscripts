@@ -30,32 +30,33 @@ DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 #gunzip ./fastq_extracted_files/*.fq.gz
 #
 #
-## pick read1 and read2 for running bowtie2
-#
-## delete the file endings ("_1" or "_2") in the file "all_fastqc_files.txt"
-#while read LINE
-#do
-# echo $LINE | rev | cut -c3- | rev >> tmpfile
-#done < all_fastqc_files.txt
-#mv tmpfile all_fastqc_files_unique.txt 
-#
-#
-## delete the duplicates
-#uniq all_fastqc_files_unique.txt > tmpfile
-#mv tmpfile all_fastqc_files_unique.txt
-#
 #=============================================
+
+# pick read1 and read2 for running bowtie2
+
+# delete the file endings ("_1" or "_2") in the file "all_fastqc_files.txt"
+while read LINE
+do
+ echo $LINE | rev | cut -c3- | rev >> tmpfile
+done < all_fastqc_files.txt
+mv tmpfile all_fastqc_files_unique.txt 
+
+
+# delete the duplicates
+uniq all_fastqc_files_unique.txt > tmpfile
+mv tmpfile all_fastqc_files_unique.txt
+
 
 rm -r bowtieoutput
 mkdir bowtieoutput
 echo "Please wait, bowtie2 is running ..."
 # go to reference_genome file
 cd ./reference_genome
-DIR="../fastq_extracted_files/"
+DIR="../fastq_extracted_files"
 while read SEQ
 do
  bowtie2 -x Tcongolense -1 ${DIR}/${SEQ}_1.fq -2 ${DIR}/${SEQ}_2.fq -S ../bowtieoutput/${SEQ}.sam
-done < ../all_fastqc_files.txt
+done < ../all_fastqc_files_unique.txt
 
 cd ..
 
