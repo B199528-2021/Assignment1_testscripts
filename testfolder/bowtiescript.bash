@@ -37,12 +37,12 @@ DIRFQFILE="/localdisk/data/BPSM/AY21/fastq"
 #do
 # echo $LINE | rev | cut -c3- | rev >> tmpfile
 #done < all_fastqc_files.txt
-#mv tmpfile all_fastqc_files.txt 
+#mv tmpfile all_fastqc_files_unique.txt 
 #
 #
 ## delete the duplicates
-#uniq all_fastqc_files.txt > tmpfile
-#mv tmpfile all_fastqc_files.txt
+#uniq all_fastqc_files_unique.txt > tmpfile
+#mv tmpfile all_fastqc_files_unique.txt
 #
 #=============================================
 
@@ -64,7 +64,7 @@ echo "Please wait, samtools is running ..."
 while read SAM
 do
  samtools view -S -b ./bowtieoutput/${SAM}.sam > ./bowtieoutput/${SAM}.bam
-done < ./all_fastqc_files.txt
+done < ./all_fastqc_files_unique.txt
 
 
 # find out directory
