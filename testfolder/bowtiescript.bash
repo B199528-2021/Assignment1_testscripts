@@ -64,7 +64,10 @@ echo "Please wait, samtools is running ..."
 # turn sam files into bam files using samtools
 while read SAM
 do
- samtools view -S -b ./bowtieoutput/${SAM}.sam > ./bowtieoutput/${SAM}.bam
+# old version
+# samtools view -S -b ./bowtieoutput/${SAM}.sam > ./bowtieoutput/${SAM}.bam
+ samtools sort ./bowtieoutput/${SAM}.sam -o ./bowtieoutput/${SAM}_sorted.bam
+ samtools index ./bowtieoutput/${SAM}_sorted.bam
 done < ./all_fastqc_files_unique.txt
 
 
