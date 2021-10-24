@@ -18,19 +18,30 @@ cp /localdisk/data/BPSM/AY21/fastq/100k.fqfiles ./sample_details.tsv
 awk '{$6=$7=""; print $0}' sample_details.tsv > tempfile
 mv tempfile sample_details.tsv
 
-# TODO: loop
 
 # for loop iterating through sample details lines
 
 # number of lines in sample details
-NR=`wc -l sample_details.tsv | awk '{ print $1-1}'`
+LINENR=`wc -l sample_details.tsv | awk '{ print $1}'`
 
-i=0
-for f in $(seq 1 $NR)
+cp sample_details.tsv test
+
+# indexing lines
+INDEX=0
+for SAMPLE in $(seq 1 $LINENR)
 do
- i=$(( i + 1 ))
- echo index $i
+ INDEX=$(( INDEX + 1 ))
+ LINE=$(awk -v linenumber="$SAMPLE" '{if(NR==linenumber) print $2,$4,$5;}' sample_details.tsv)
+ GROUP=$(echo "$LINE" | tr " " .)
+ awk -v username="$GROUP" -v line="$SAMPLE" 'NR == line { $0 = $0 username } 1' sample_details.tsv > test
+ grep "$GROUP" test >> tester
 done
+
+rm test
+
+# overwrite sample_details.tsv
+mv tester sample_details.tsv
+
 
 exit
 
