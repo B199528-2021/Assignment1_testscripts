@@ -23,20 +23,15 @@ BAMFILES=$(<bamfiles.txt)
 # run bedtolls for all bam alignments
 bedtools multicov -bams $BAMFILES -bed $BEDFILE > bedtoolsoutput.txt
 
-# create a file without chromosome details
-awk '{FS="\t"; OFS="\t"; {print $4,$5;}}' bedtoolsoutput.txt > bedtoolsoutput_genes.tsv
-
 # delete bamfiles.txt
 rm bamfiles.txt
+
+# create a file without chromosome details
+cut -f 4- bedtoolsoutput.txt > bedtoolsoutput_genes.tsv
+
+
+
 
 
 echo "Bedtools finished. Please find the results in the file 'bedtoolsoutpus_genes.tsv'."
 
-
-
-
-
-
-
-
-echo "FINISHED"
