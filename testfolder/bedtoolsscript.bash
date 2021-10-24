@@ -4,7 +4,7 @@
 # path of the bedfile
 BEDFILE="/localdisk/data/BPSM/AY21/TriTrypDB-46_TcongolenseIL3000_2019.bed"
 
-echo "Please wait, bedtools is running ..."
+echo "Please wait, generating groups ..."
 
 
 # run bedtools for one group only
@@ -42,30 +42,22 @@ rm test
 # overwrite sample_details.tsv
 mv tester sample_details.tsv
 
-
-exit
-
-
-# save columns for groups into variable
-LINE=$(awk '{if(NR==4) print $2,$4,$5;}' sample_details.tsv)
-
-# replace spaces by dots
-GROUP=$(echo "$LINE" | tr " " .)
-
-echo "test $GROUP"
-
-awk -v username="$GROUP" -v line=4 'NR == line { $0 = $0 username } 1' sample_details.tsv
-
+# find out groups
+awk '{print $6}' sample_details.tsv > groups.txt
+# delete header
+sed 1d groups.txt > temp
+mv temp groups.txt
+# delete duplicates
+cat groups.txt | sort | uniq > temp
+mv temp groups.txt
 
 
 
 exit
 
-for var in a b c d e
-do
- echo -e
 
-exit
+
+
 
 
 
