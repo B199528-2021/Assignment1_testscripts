@@ -51,57 +51,19 @@ mv temp groups.txt
 cat groups.txt | sort | uniq > temp
 mv temp groups.txt
 
-
 # groups.txt will be important for the loop for bedtools
 
+rm -r bedtoolsoutput
+mkdir bedtoolsoutput
 
-#---
-
-# test for "Clone1.48.Induced" only
-
-# save the 1st column where the group is "Clone1.48.Induced"
-awk '{if($6 == "Clone1.48.Induced"){print $1;}}' sample_details.tsv > onegroup.txt
-
-# add "100k." to each line
-sed -i -e 's/^/100k./' onegroup.txt 
-
-# put all the bam files into a variable
-while read SEQ
-do
- echo "./bowtieoutput/$SEQ.bam" >> tempfile
-done < ./onegroup.txt
-
-# delete newlines
-tr "\n" " " < tempfile > tempfile2
-rm tempfile
-mv tempfile2 bamfiles.txt
-
-# save it into a variable
-BAMFILES=$(<bamfiles.txt)
-
-# run bedtools for all bam alignments
-bedtools multicov -bams $BAMFILES -bed $BEDFILE > bedtoolsoutput.txt
-
-# create a file without chromosome details
-cut -f 4- bedtoolsoutput.txt > bedtoolsoutput_genes.tsv
-
-# delete bamfiles.txt
-rm bamfiles.txt
-
-echo "This is a test for 'Clone1.48.Induced' only."
-
-exit
-
-
-
-# TODO next: loop!
+echo "Please wait, bedtools is running ..."
 
 while read GROUP
 do
- 
+
  # save the first column from this group
  awk -v groupname="$GROUP" '{if($6 == groupname){print $1;}}' sample_details.tsv > onegroup.txt
- 
+
  # add "100k." to each line
  sed -i -e 's/^/100k./' onegroup.txt
 
@@ -120,7 +82,7 @@ do
  BAMFILES=$(<bamfiles.txt)
 
  # run bedtools for all bam alignments
- bedtools multicov -bams $BAMFILES -bed $BEDFILE > bedtoolsoutput.txt
+ bedtools multicov -bams $BAMFILES -bed $BEDFILE > ./bedtoolsoutput.txt
 
  # create a file without chromosome details
  cut -f 4- bedtoolsoutput.txt > bedtoolsoutput_genes.tsv
@@ -129,80 +91,44 @@ do
  rm bamfiles.txt
 
  # save file in group specific file
- mv bedtoolsoutput_genes.tsv bedtoolsoutput.$GROUP.tsv
+ mv bedtoolsoutput_genes.tsv ./bedtoolsoutput/bedtoolsoutput.$GROUP.tsv
+
+ echo "Bedtools for $GROUP generated."
 
 done < ./groups.txt
 
-exit
+rm onegroup.txt
+rm bedtoolsoutput.txt
+
+echo "Please find the results for bedtools in the folder 'bedtoolsoutput'."
 
 
-### OLD VERSION:
-
-# put all the bam files into a variable
-while read SEQ
-do
- echo "./bowtieoutput/$SEQ.bam" >> tempfile
-done < ./all_fastqc_files_unique.txt
-
-# delete newlines
-tr "\n" " " < tempfile > tempfile2
-rm tempfile
-mv tempfile2 bamfiles.txt
-
-# save it into a variable
-BAMFILES=$(<bamfiles.txt)
-
-# run bedtolls for all bam alignments
-bedtools multicov -bams $BAMFILES -bed $BEDFILE > bedtoolsoutput.txt
-
-# delete bamfiles.txt
-rm bamfiles.txt
-
-# create a file without chromosome details
-cut -f 4- bedtoolsoutput.txt > bedtoolsoutput_genes.tsv
-
-# add a header
-
-# delete the "100k." from the fq files
-while read FQ
-do
- echo $FQ | cut -c 6-13 >> tmpfile
-done < all_fastqc_files.txt
-
-mv tmpfile all_fastqc_files_without_100k.txt
-
-
+echo "FINISHED?"
 
 exit
 
 
-VARIABLE=$(for  in ...; do ...; done)
-
-echo "FINISHED"
-
-
-# put them into a variable
-while read SEQ
-do
- echo "$SEQ" >> tempfile
-done < ./all_fastqc_files_without_100k.txt
-
-# delete newlines
-tr "\n" " " < tempfile > tempfile2
-rm tempfile
-mv tempfile2 spacefiles.txt
+# go into the bedtoolsoutput folder
+cd ./bedtoolsoutput
 
 
+#-------------
 
-# save it into a variable
-#TABFILES = $(<tabfiles.txt)
+# test for one group first: Clone1.0.Uninduced
+
+ONEGROUP="Clone1.0.Uninduced"
+
+cp bedtoolsoutput.$ONEGROUP.tsv ./averagecounts.$ONEGROUP.tsv
+
+# delete the first columns (gene + description)
+cut -f -2 averagecounts.$ONEGROUP.tsv > tempfile
+
+# calculate average
+awk '{s=0; for (i=1;i<=NF;i++)s+=$i; print s/NF;}' tempfile
 
 
-# copy for testing
-cp bedtoolsoutput_genes.tsv testgenes.tsv
 
-# add header to bedtoolsoutput_genes.tsv
-#sed  -i '1i $TABFILES' testgenes.tsv
 
-echo "Bedtools finished. Please find the results in the file 'bedtoolsoutput_genes.tsv'."
 
+echo "This is the current directory:"
+pwd
