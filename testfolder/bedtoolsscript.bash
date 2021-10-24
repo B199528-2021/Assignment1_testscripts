@@ -52,13 +52,88 @@ cat groups.txt | sort | uniq > temp
 mv temp groups.txt
 
 
+# groups.txt will be important for the loop for bedtools
+
+
+#---
+
+# test for "Clone1.48.Induced" only
+
+# save the 1st column where the group is "Clone1.48.Induced"
+awk '{if($6 == "Clone1.48.Induced"){print $1;}}' sample_details.tsv > onegroup.txt
+
+# add "100k." to each line
+sed -i -e 's/^/100k./' onegroup.txt 
+
+# put all the bam files into a variable
+while read SEQ
+do
+ echo "./bowtieoutput/$SEQ.bam" >> tempfile
+done < ./onegroup.txt
+
+# delete newlines
+tr "\n" " " < tempfile > tempfile2
+rm tempfile
+mv tempfile2 bamfiles.txt
+
+# save it into a variable
+BAMFILES=$(<bamfiles.txt)
+
+# run bedtools for all bam alignments
+bedtools multicov -bams $BAMFILES -bed $BEDFILE > bedtoolsoutput.txt
+
+# create a file without chromosome details
+cut -f 4- bedtoolsoutput.txt > bedtoolsoutput_genes.tsv
+
+# delete bamfiles.txt
+rm bamfiles.txt
+
+echo "This is a test for 'Clone1.48.Induced' only."
 
 exit
 
 
 
+# TODO next: loop!
 
+while read GROUP
+do
+ 
+ # save the first column from this group
+ awk -v groupname="$GROUP" '{if($6 == groupname){print $1;}}' sample_details.tsv > onegroup.txt
+ 
+ # add "100k." to each line
+ sed -i -e 's/^/100k./' onegroup.txt
 
+ # put all the bam files into a variable
+ while read SEQ
+ do
+  echo "./bowtieoutput/$SEQ.bam" >> tempfile
+ done < ./onegroup.txt
+
+ # delete newlines
+ tr "\n" " " < tempfile > tempfile2
+ rm tempfile
+ mv tempfile2 bamfiles.txt
+
+ # save it into a variable
+ BAMFILES=$(<bamfiles.txt)
+
+ # run bedtools for all bam alignments
+ bedtools multicov -bams $BAMFILES -bed $BEDFILE > bedtoolsoutput.txt
+
+ # create a file without chromosome details
+ cut -f 4- bedtoolsoutput.txt > bedtoolsoutput_genes.tsv
+
+ # delete bamfiles.txt
+ rm bamfiles.txt
+
+ # save file in group specific file
+ mv bedtoolsoutput_genes.tsv bedtoolsoutput.$GROUP.tsv
+
+done < ./groups.txt
+
+exit
 
 
 ### OLD VERSION:
