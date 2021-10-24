@@ -10,7 +10,7 @@ echo "Please wait, bedtools is running ..."
 while read SEQ
 do
  echo "./bowtieoutput/$SEQ.bam" >> tempfile
- done < ./all_fastqc_files_unique.txt
+done < ./all_fastqc_files_unique.txt
 
 # delete newlines
 tr "\n" " " < tempfile > tempfile2
@@ -27,7 +27,14 @@ bedtools multicov -bams $BAMFILES -bed $BEDFILE > bedtoolsoutput.txt
 # delete bamfiles.txt
 rm bamfiles.txt
 
-echo "Bedtools finished."
+# create a file without chromosome details
+awk '{FS="\t"; OFS="\t"; {print $4,$5;}}' bedtoolsoutput.txt > bedtoolsoutput_genes.tsv
+
+
+
+
+echo "Bedtools finished. Please find the results in the file 'bedtoolsoutpus_genes.tsv'."
+
 
 
 
