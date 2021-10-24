@@ -66,8 +66,8 @@ while read SAM
 do
 # old version
 # samtools view -S -b ./bowtieoutput/${SAM}.sam > ./bowtieoutput/${SAM}.bam
- samtools sort ./bowtieoutput/${SAM}.sam -o ./bowtieoutput/${SAM}_sorted.bam
- samtools index ./bowtieoutput/${SAM}_sorted.bam
+ samtools sort ./bowtieoutput/${SAM}.sam -o ./bowtieoutput/${SAM}.bam
+ samtools index ./bowtieoutput/${SAM}.bam
 done < ./all_fastqc_files_unique.txt
 
 
