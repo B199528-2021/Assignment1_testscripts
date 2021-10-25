@@ -1,6 +1,10 @@
 # add shebang line
 #!/bin/bash
 
+echo "Calculating the average was not successful."
+
+exit
+
 echo "Calculating the average now ..."
 
 rm -r analysis
@@ -14,6 +18,7 @@ do
  # delete the first columns (gene + description)
  cut -f -2 ./bedtoolsoutput/averagecounts.$ONEGROUP.tsv > tempfile
 
+ # THE OUTPUT IS NOT THE AVERAGE - SOMETHING WENT WRONG:
  # calculate average
  awk '{FS="\t"; OFS="\t"; s=0; for (i=1;i<=NF;i++)s+=$i; print s/NF;}' tempfile > ./bedtoolsoutput/averagecounts.$ONEGROUP.tsv
  rm tempfile
@@ -31,9 +36,7 @@ done < ./groups.txt
 echo "Please find the average results in the folder 'analysis'."
 
 
-
-# test
-
+# add two columns in one file
 cd ./analysis
 
 SAMPLE="Clone1"
@@ -48,10 +51,9 @@ cut -f -3 $SAMPLE.$TIME.$EXP.tsv | paste refcolumn - > temporaer
 mv temporaer compare.$SAMPLE.$TIME.$REF-$EXP.tsv
 rm refcolumn
 
-exit
 
 # calculate fold change
-awk '{ print $2/$1 }' compare.$SAMPLE.$TIME.$REF-$EXP.tsv > fold.$SAMPLE.$TIME.$REF-$EXP.tsv
+awk '$2 !=0 || $1 !=0{ print $2/$1 }' compare.$SAMPLE.$TIME.$REF-$EXP.tsv > fold.$SAMPLE.$TIME.$REF-$EXP.tsv
 exit
 
 
