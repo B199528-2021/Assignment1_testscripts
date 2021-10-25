@@ -38,8 +38,20 @@ cd ./analysis
 
 SAMPLE="Clone1"
 TIME="24"
-cut -d " " -f3 $SAMPLE.$TIME.Induced.tsv > short
+REF="Uninduced"
+EXP="Induced"
 
+# take only first column
+cut -f1 $SAMPLE.$TIME.$REF.tsv > refcolumn
+# put first column to beginning of other 3 columns
+cut -f -3 $SAMPLE.$TIME.$EXP.tsv | paste refcolumn - > temporaer
+mv temporaer compare.$SAMPLE.$TIME.$REF-$EXP.tsv
+rm refcolumn
+
+exit
+
+# calculate fold change
+awk '{ print $2/$1 }' compare.$SAMPLE.$TIME.$REF-$EXP.tsv > fold.$SAMPLE.$TIME.$REF-$EXP.tsv
 exit
 
 
