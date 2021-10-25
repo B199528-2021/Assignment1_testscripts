@@ -3,4 +3,5 @@
 
 ./fastqccheck.bash
 ./bowtiescript.bash
-
+./bedtoolsscript.bash
+./analysisscript.bash

@@ -70,5 +70,5 @@ done < ./all_fastqc_files_unique.txt
 
 # find out directory
 echo "Thanks for waiting, bowtie2 has finished."
-echo "This is current directory:"
+echo "This is the current directory:"
 pwd

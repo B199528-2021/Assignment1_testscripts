@@ -36,7 +36,7 @@ mv tmpfile all_fastqc_files.txt
 #----------------------------------------------------
 # THIS IS ONLY FOR TESTING -> TODO: REMOVE AT THE END
 # pick only the first 8 reads
-sed -i -n "1,8 p" all_fastqc_files.txt
+#sed -i -n "1,8 p" all_fastqc_files.txt
 #----------------------------------------------------
 
 
